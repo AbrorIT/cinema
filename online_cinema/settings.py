@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #apps
     'apps.category',
     'apps.home',
+    'apps.movies',
 
 ]
 

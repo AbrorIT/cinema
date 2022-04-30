@@ -33,15 +33,4 @@ class Actor(models.Model):
     class Meta:
         verbose_name = "Актеры и режиссеры"
         verbose_name_plural = "Актеры и режиссеры"
-
-class Genre(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    url = models.SlugField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = "Жанр"
-        verbose_name_plural = "Жанры"
+ 

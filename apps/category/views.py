@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from .models import Category, Actor, Genre
+from .models import Category#, Actor, Genre
 
 

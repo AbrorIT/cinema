@@ -17,7 +17,7 @@ def register(request):
             return redirect('index')
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'account/register.html', {'user_form': user_form})
+    return render(request, 'userrate_light.html', {'user_form': user_form})
 
 def user_login(request):
     if request.method == 'POST':
@@ -35,4 +35,4 @@ def user_login(request):
                 return HttpResponse('Invalid login')
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'userrate_light.html', {'form': form})

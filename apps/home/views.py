@@ -1,12 +1,39 @@
+
+  
 from django.shortcuts import render
-from apps.home.models import Home
+from apps.home.models import Home, About
+from apps.movies.models import Movie, MovieComment
+from apps.categories.models import Category
 # Create your views here.
 
 def index(request):
     home = Home.objects.latest('id')
-
+    slide_movies = Movie.objects.all().order_by('-id')[:5]
+    movies = Movie.objects.all().order_by('-id')[:8]
+    one_random_movie = Movie.objects.all().order_by('?')
+    one_random_genre = Movie.objects.all().order_by('?')[:1]
+    categories = Category.objects.all().order_by('-id')
+    most_popular_movie = Movie.objects.all().order_by('-genre')
+    comments = MovieComment.objects.all().order_by('-id')
     context = {
-        'home': home,
+        'home' : home,
+        'movies' : movies,
+        'slide_movies' : slide_movies,
+        'one_random_movie' : one_random_movie,
+        'one_random_genre' : one_random_genre,
+        'categories' : categories,
+        'most_popular_movie' : most_popular_movie,
+        'comments' : comments,
 
     }
     return render(request, 'index.html', context)
+
+def about(request):
+    home = Home.objects.latest('-id')
+    about = About.objects.latest('id')
+    context = {
+        'home' : home,
+        'about' : about, 
+    }
+
+    return render(request, 'userprofile_light.html', context)

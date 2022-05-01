@@ -1,131 +1,74 @@
-from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from apps.movies.models import Movie, MovieComment
+from apps.home.models import Home
+from apps.categories.models import Category
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import redirect
-from django.views.generic import ListView, DetailView
-from django.views.generic.base import View
+from apps.movies.forms import MovieCreateForm, MovieUpdateForm
 
-from .models import Film, Category, Actor, Genre, Rating, Reviews
-from .forms import ReviewForm, RatingForm
+# Create your views here.
+def movie_detail(request, id):
+    movie = Movie.objects.get(id = id)
+    random_movies = Movie.objects.all().order_by('?')[:20]
+    home = Home.objects.latest('id')
+    categories = Category.objects.all().order_by('?')[:5]
+    if 'comment' in request.POST:
+        id = request.POST.get('post_id')
+        message = request.POST.get('comment_message')
+        comment = MovieComment.objects.create(message=message, movie=movie, user=request.user)
+        return redirect('movie_detail', movie.id)
 
+    context = {
+        'movie' : movie,
+        'random_movies' : random_movies,
+        'home' : home,
+        'categories' : categories,
+        'comment' : comment,
+    }
+    return render(request, 'movielist.html', context)
 
-class GenreYear:
-    """Жанры и года выхода фильмов"""
+def movie_search(request):
+    movies = Movie.objects.all()
+    qury_obj = request.GET.get('key')
+    home = Home.objects.latest('id')
+    if qury_obj:
+        products = Movie.objects.filter(Q(title__icontains = qury_obj))
+    context = {
+        'home' : home, 
+        'movies' : movies,
+        'products' : products,
+    }
+    return render(request, 'movielist.html', context)
 
-    def get_genres(self):
-        return Genre.objects.all()
+def movie_create(request):
+    form = MovieCreateForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('index')
+    context = {
+        'form': form,
 
-    def get_years(self):
-        return Film.objects.filter(draft=False).values("year")
+    }
+    return render(request, 'movielist.html', context)
 
-
-class FilmView(GenreYear, ListView):
-    """Список фильмов"""
-    model =Film
-    queryset = Film.objects.filter(draft=False)
-    paginate_by = 1
-
-
-class FilmDetailView(GenreYear, DetailView):
-    """Полное описание фильма"""
-    model =Film
-    queryset = Film.objects.filter(draft=False)
-    slug_field = "url"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["star_form"] = RatingForm()
-        context["form"] = ReviewForm()
-        return context
-
-
-class AddReview(View):
-    """Отзывы"""
-
-    def post(self, request, pk):
-        form = ReviewForm(request.POST)
-        movie = Film.objects.get(id=pk)
-        if form.is_valid():
-            form = form.save(commit=False)
-            if request.POST.get("parent", None):
-                form.parent_id = int(request.POST.get("parent"))
-            form.movie = movie
-            form.save()
-        return redirect(movie.get_absolute_url())
-
-
-class ActorView(GenreYear, DetailView):
-    """Вывод информации о актере"""
-    model = Actor
-    template_name = 'movies/actor.html'
-    slug_field = "name"
+def movie_update(request, id):
+    movie = Movie.objects.get(id = id)
+    form = MovieUpdateForm(request.POST or None, instance=movie)
+    if form.is_valid():
+        form.save()
+        return redirect('movie_detail', movie.id)
+    context = {
+        'form' : form,
+    }
+    return render(request, 'movielist.html', context)
 
 
-class FilterFilmView(GenreYear, ListView):
-    """Фильтр фильмов"""
-    paginate_by = 5
+def movie_delete(request, id):
+    context ={}
+ 
+    obj = get_object_or_404(Movie, id = id)
+    if request.method =="POST":
 
-    def get_queryset(self):
-        queryset = Film.objects.filter(
-            Q(year__in=self.request.GET.getlist("year")) |
-            Q(genres__in=self.request.GET.getlist("genre"))
-        ).distinct()
-        return queryset
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["year"] = ''.join([f"year={x}&" for x in self.request.GET.getlist("year")])
-        context["genre"] = ''.join([f"genre={x}&" for x in self.request.GET.getlist("genre")])
-        return context
-
-
-class JsonFilterFilmView(ListView):
-    """Фильтр фильмов в json"""
-
-    def get_queryset(self):
-        queryset = Film.objects.filter(
-            Q(year__in=self.request.GET.getlist("year")) |
-            Q(genres__in=self.request.GET.getlist("genre"))
-        ).distinct().values("title", "tagline", "url", "poster")
-        return queryset
-
-    def get(self, request, *args, **kwargs):
-        queryset = list(self.get_queryset())
-        return JsonResponse({"movies": queryset}, safe=False)
-
-
-class AddStarRating(View):
-    """Добавление рейтинга фильму"""
-
-    def get_client_ip(self, request):
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-        return ip
-
-    def post(self, request):
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            Rating.objects.update_or_create(
-                ip=self.get_client_ip(request),
-                movie_id=int(request.POST.get("movie")),
-                defaults={'star_id': int(request.POST.get("star"))}
-            )
-            return HttpResponse(status=201)
-        else:
-            return HttpResponse(status=400)
-
-
-class Search(ListView):
-    """Поиск фильмов"""
-    paginate_by = 3
-
-    def get_queryset(self):
-        return Film.objects.filter(title__icontains=self.request.GET.get("q"))
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["q"] = f'q={self.request.GET.get("q")}&'
-        return context
+        obj.delete()
+        return HttpResponseRedirect("/")
+ 
+    return render(request, "movielist.html", context)

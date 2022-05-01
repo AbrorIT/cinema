@@ -1,12 +1,19 @@
 from django.contrib import admin
-from apps.movies.models import Film, Genre, Actor, Rating, MovieShots, RatingStar, Reviews
+from apps.movies.models import Movie, MovieImage, MovieComment
 
-# from apps.category.models import Category
+# Register your models here.
 
-admin.site.register(Film)
-admin.site.register(Genre)
-admin.site.register(Actor)
-admin.site.register(Rating)
-admin.site.register(MovieShots)
-admin.site.register(RatingStar)
-admin.site.register(Reviews)
+class MovieImageAdmin(admin.TabularInline):
+    model = MovieImage
+    extra = 3
+
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [MovieImageAdmin]
+    list_display = ('title', 'genre')
+    search_fields = ('title', 'genre')
+    ordering = ('-genre',)
+    list_per_page = 4
+    prepopulated_fields = {"slug": ('title', )}
+
+admin.site.register(Movie, ProductAdmin)
+admin.site.register(MovieComment)

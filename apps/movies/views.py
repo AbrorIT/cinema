@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from apps.movies.models import Movie, MovieComment
-from apps.home.models import Home
+from apps.home.models import Setting
 from apps.categories.models import Category
 from django.db.models import Q
 from apps.movies.forms import MovieCreateForm, MovieUpdateForm
@@ -9,7 +9,7 @@ from apps.movies.forms import MovieCreateForm, MovieUpdateForm
 def movie_detail(request, id):
     movie = Movie.objects.get(id = id)
     random_movies = Movie.objects.all().order_by('?')[:20]
-    home = Home.objects.latest('id')
+    home = Setting.objects.latest('id')
     categories = Category.objects.all().order_by('?')[:5]
     if 'comment' in request.POST:
         id = request.POST.get('post_id')
@@ -29,7 +29,7 @@ def movie_detail(request, id):
 def movie_search(request):
     movies = Movie.objects.all()
     qury_obj = request.GET.get('key')
-    home = Home.objects.latest('id')
+    home = Setting.objects.latest('id')
     if qury_obj:
         products = Movie.objects.filter(Q(title__icontains = qury_obj))
     context = {

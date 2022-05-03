@@ -1,9 +1,7 @@
-
-  
 from django.db import models
 from apps.categories.models import Category
 from apps.users.models import User
-
+# from apps.movies.models import Reviews
 
 # Create your models here.
 class Movie(models.Model):
@@ -15,10 +13,8 @@ class Movie(models.Model):
         ('Комедии', 'Комедии'),
         ('Фантастика', 'Фантастика'),
         ('Боевики', 'Боевики'),
-        ('Мультфильмы', 'Мультфильмы'),
-        ('Аниме', 'Аниме'),
         ('Ужасы', 'Ужасы'),
-        ('Документальные', 'Документальные'),
+        ('Мультфильмы', 'Мультфильмы'),
     )
     genre = models.CharField(choices=GENRE_CHOICES, default='Боевики', max_length=250)
     rating = models.IntegerField()

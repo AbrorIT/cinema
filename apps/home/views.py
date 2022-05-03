@@ -1,13 +1,13 @@
 
   
 from django.shortcuts import render
-from apps.home.models import Setting, About
+from apps.home.models import Home, About
 from apps.movies.models import Movie, MovieComment
 from apps.categories.models import Category
 # Create your views here.
 
 def index(request):
-    home = Setting.objects.latest('id')
+    home = Home.objects.latest('id')
     slide_movies = Movie.objects.all().order_by('-id')[:5]
     movies = Movie.objects.all().order_by('-id')[:8]
     one_random_movie = Movie.objects.all().order_by('?')
@@ -29,7 +29,7 @@ def index(request):
     return render(request, 'index.html', context)
 
 def about(request):
-    home = Setting.objects.latest('-id')
+    home = Home.objects.latest('-id')
     about = About.objects.latest('id')
     context = {
         'home' : home,

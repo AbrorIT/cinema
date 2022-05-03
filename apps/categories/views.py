@@ -1,9 +1,7 @@
-
-  
 from django.shortcuts import render
 from apps.categories.models import Category
 from apps.movies.models import Movie
-from apps.home.models import Setting
+from apps.home.models import Home
 from django.core.paginator import Paginator
 
 # Create your views here.

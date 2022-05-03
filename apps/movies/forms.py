@@ -1,12 +1,10 @@
 from django import forms
-from snowpenguin.django.recaptcha3.fields import ReCaptchaField
 
-from .models import Reviews, Rating, RatingStar
+from apps.movies.models import Reviews, Rating, RatingStar
 
 
 class ReviewForm(forms.ModelForm):
-    """Форма отзывов"""
-    captcha = ReCaptchaField()
+    captcha = forms.CharField()
 
     class Meta:
         model = Reviews
@@ -19,7 +17,6 @@ class ReviewForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
-    """Форма добавления рейтинга"""
     star = forms.ModelChoiceField(
         queryset=RatingStar.objects.all(), widget=forms.RadioSelect(), empty_label=None
     )
@@ -27,3 +24,24 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ("star",)
+
+class MovieCreateForm(forms.ModelForm):
+    title = forms.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Названия"
+        verbose_name_plural = "Названии"
+
+
+class MovieUpdateForm(forms.ModelForm):
+    update= forms.CharField()
+
+    def __str__(self):
+        return self.update
+    
+    class Meta:
+        verbose_name = "Обновления"
+        verbose_name_plural = "Обновлении"

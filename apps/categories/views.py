@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from apps.categories.models import Category
 from apps.movies.models import Movie
-from apps.home.models import Home
+from apps.home.models import Setting
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 def category_detail(request, slug):
     category = Category.objects.get(slug = slug)
     categories = Category.objects.all().order_by('?')[:8]
-    home = Home.objects.latest('-id')
+    home = Setting.objects.latest('-id')
     movies = Movie.objects.all().order_by('-id')
     paginator = Paginator(movies, 5)
     page_number = request.GET.get('page')

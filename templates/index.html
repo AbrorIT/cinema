@@ -15,22 +15,22 @@
 			</div>
 			 
 	    	<div  class="slick-multiItemSlider">
-				
+				{% for movie in movies %}
 	    		<div class="movie-item">
-					{% for movie in index %}
+					 
 	    			<div class="mv-img">
-	    				<a href="#"><img src="{%  url 'main_movie_image' %}" alt="" width="285" height="437"></a>
+	    				<a href="#"><img src="{{ movie.main_movie_image.url }}" alt="" width="285" height="437"></a>
 	    			</div>
 	    			<div class="title-in">
 	    				<div class="cate">
-	    					<span class="blue"><a href="#">Sci-fi</a></span>
+	    					<span class="blue"><a href="#">{{ movie.genre}}</a></span>
 	    				</div>
 	    				<h6><a href="#">{{ movie.title }}</a></h6>
 	    				<p><i class="ion-android-star"></i><span>7.4</span> /10</p>
 	    			</div>
-					{% endfor %}
+					 
 	    		</div>
-				 
+				{% endfor %} 
 	    	</div>
 			 
 	    </div>

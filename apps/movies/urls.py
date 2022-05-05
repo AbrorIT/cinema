@@ -5,6 +5,6 @@ from .models import Movie
 
 urlpatterns = [
     path('', Movie, name = 'index'),
-    path('userprofile_light/',movie_detail, name = 'about'), 
+    path('movie-detail/<int:id>', movie_detail , name = 'movie_detail'), 
 ]
 

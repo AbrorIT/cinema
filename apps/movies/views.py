@@ -11,20 +11,20 @@ def movie_detail(request, id):
     random_movies = Movie.objects.all().order_by('?')[:20]
     home = Setting.objects.latest('id')
     categories = Category.objects.all().order_by('?')[:5]
-    if 'comment' in request.POST:
-        id = request.POST.get('post_id')
-        message = request.POST.get('comment_message')
-        comment = MovieComment.objects.create(message=message, movie=movie, user=request.user)
-        return redirect('movie_detail', movie.id)
+    # if 'comment' in request.POST:
+    #     id = request.POST.get('post_id')
+    #     message = request.POST.get('comment_message')
+    #     comment = MovieComment.objects.create(message=message, movie=movie, user=request.user)
+    #     return redirect('movie_detail', movie.id)
 
     context = {
         'movie' : movie,
         'random_movies' : random_movies,
         'home' : home,
         'categories' : categories,
-        'comment' : comment,
+        # 'comment' : comment,
     }
-    return render(request, 'movielist.html', context)
+    return render(request, 'moviesingle.html', context)
 
 def movie_search(request):
     movies = Movie.objects.all()

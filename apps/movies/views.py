@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from apps.movies.models import Movie, MovieComment
+from apps.movies.models import Movie
 from apps.home.models import Setting
 from apps.categories.models import Category
 from django.db.models import Q
@@ -11,18 +11,11 @@ def movie_detail(request, id):
     random_movies = Movie.objects.all().order_by('?')[:20]
     home = Setting.objects.latest('id')
     categories = Category.objects.all().order_by('?')[:5]
-    # if 'comment' in request.POST:
-    #     id = request.POST.get('post_id')
-    #     message = request.POST.get('comment_message')
-    #     comment = MovieComment.objects.create(message=message, movie=movie, user=request.user)
-    #     return redirect('movie_detail', movie.id)
-
     context = {
         'movie' : movie,
         'random_movies' : random_movies,
         'home' : home,
         'categories' : categories,
-        # 'comment' : comment,
     }
     return render(request, 'moviesingle.html', context)
 
@@ -37,7 +30,7 @@ def movie_search(request):
         'movies' : movies,
         'products' : products,
     }
-    return render(request, 'movielist.html', context)
+    return render(request, 'index.html', context)
 
 def movie_create(request):
     form = MovieCreateForm(request.POST or None)
@@ -48,7 +41,7 @@ def movie_create(request):
         'form': form,
 
     }
-    return render(request, 'movielist.html', context)
+    return render(request, 'moviegridfw.html', context)
 
 def movie_update(request, id):
     movie = Movie.objects.get(id = id)
@@ -59,7 +52,7 @@ def movie_update(request, id):
     context = {
         'form' : form,
     }
-    return render(request, 'movielist.html', context)
+    return render(request, 'moviegridfw.html', context)
 
 
 def movie_delete(request, id):
@@ -71,4 +64,4 @@ def movie_delete(request, id):
         obj.delete()
         return HttpResponseRedirect("/")
  
-    return render(request, "movielist.html", context)
+    return render(request, "moviegridfw.html", context)

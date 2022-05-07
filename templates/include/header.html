@@ -13,7 +13,7 @@
 							<span></span>
 						</div>
 				    </div>
-				    <a href="index.html"><img class="logo" src="{% static 'images/logo1.png' %}" alt="" width="119" height="58"></a>
+				    <a href="{% url 'index' %}"><img class="logo" src="{% static 'images/logo1.png' %}" alt="" width="119" height="58"></a>
 			    </div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
@@ -22,7 +22,7 @@
 							<a href="#page-top"></a>
 						</li>
 						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							<a href="{% url 'index' %}" >
 							Домой 
 							</a>
 							 
@@ -33,14 +33,14 @@
 							</a>
 						</li>
 						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							<a href="{% url 'about' %}">
 							О нас 
 							</a>
 						</li>
 						<li><a href="#">Связаться с нами</a></li>
 					</ul> 
 					<ul class="nav navbar-nav flex-child-menu menu-right">  
-						<li class="loginLink"><a href="#">Логин</a></li>
+						<a href="{% url 'user_login' %}">Логин</a>
 						<li class="btn signupLink"><a href="#">Зарегистрироваться</a></li>
 					</ul>
 				</div>

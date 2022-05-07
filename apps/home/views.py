@@ -36,4 +36,4 @@ def about(request):
         'about' : about, 
     }
 
-    return render(request, 'userprofile_light.html', context)
+    return render(request, 'about_us.html', context)

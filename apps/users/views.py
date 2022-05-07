@@ -1,7 +1,7 @@
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from apps.users.forms import UserRegistrationForm, LoginForm
-from apps.home.models import Home
+from apps.home.models import Setting
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from apps.users.models import User
@@ -35,4 +35,4 @@ def user_login(request):
                 return HttpResponse('Invalid login')
     else:
         form = LoginForm()
-    return render(request, 'userprofile.html', {'form': form})
+    return render(request, 'account/login.html', {'form': form})

@@ -1,3 +1,4 @@
+from email.mime import image
 from django.db import models
  
 
@@ -18,14 +19,11 @@ class Setting(models.Model):
         verbose_name_plural = "Настройки"
 
 class About(models.Model):
-    title = models.CharField(max_length=255)
     description = models.TextField()
-    owner = models.CharField(max_length=255)
-    position = models.CharField(max_length=100)
-    signature = models.ImageField(upload_to = "signature/")
+    image_about = models.ImageField(upload_to = "about/")
 
     def __str__(self):
-        return self.title
+        return self.description
 
     class Meta:
         verbose_name = "О нас"

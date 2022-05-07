@@ -1,48 +1,57 @@
 {% extends 'homepage.html' %}
 {% load static %}
 {% block content %}
-
 {% include 'include/header.html' %}
 
-<div class="login-wrapper" id="login-content">
-    <div class="login-content">
-        <a href="#" class="close">x</a>
-        <h3></h3>
-        <form method="post" action="login.php">
-        	<div class="row">
-        		 <label for="username">
-                    Username:
-                    <input type="text" name="username" id="username" placeholder="Hugh Jackman" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required" />
-                </label>
-        	</div>
-           
-            <div class="row">
-            	<label for="password">
-                    Password:
-                    <input type="password" name="password" id="password" placeholder="******" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
-                </label>
-            </div>
-            <div class="row">
-            	<div class="remember">
-					<div>
-						<input type="checkbox" name="remember" value="Remember me"><span>Remember me</span>
-					</div>
-            		<a href="#">Forget password ?</a>
-            	</div>
-            </div>
-           <div class="row">
-           	 <button type="submit">Login</button>
-           </div>
-        </form>
-        <div class="row">
-        	<p>Or via social</p>
-            <div class="social-btn-2">
-            	<a class="fb" href="#"><i class="ion-social-facebook">{{ home.facebook }}</a>
-            	<a class="tw" href="#"><i class="ion-social-twitter">{{ home.twitter}}</a>
-            </div>
-        </div>
-    </div>
+<div class="hero user-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1>Edward kennedy’s profile</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span>Profile</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<main class="main__content_wrapper">
+ 
 
-{% include 'include/footer.html' %}	
+    <!-- Start login section  -->
+    <div class="login__section section--padding">
+        <div class="container">
+          
+                <div class="login__section--inner">
+                    <div class="row row-cols-md-2 row-cols-1"> 
+                        <div class="col">
+                            <div class="account__login register">
+                                <div class="account__login--header mb-25">
+                                    <h3 class="account__login--header__title mb-10">Create an Account</h3>
+                                    <p class="account__login--header__desc">Register here if you are a new customer</p>
+                                </div>
+                                <form action="." method="post">
+                                    {{ form.as_p }}
+                                    {% csrf_token %}
+                                    <p><input type="submit" value="Log-in"></p>
+                                </form>
+                                <h3 class="account__login--header__title mb-10">Войти через: </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+        </div>     
+    </div>
+    <!-- End login section  -->
+
+ 
+
+</main>
+ 
+
 {% endblock %}

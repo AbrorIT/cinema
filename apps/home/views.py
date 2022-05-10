@@ -1,5 +1,3 @@
-
-  
 from django.shortcuts import render
 from apps.home.models import About, Setting
 from apps.movies.models import Movie, MovieComment

@@ -1,7 +1,9 @@
 {% extends 'homepage.html' %}
 {% load static %}
 {% block content %}
-{% include 'include/header.html' %}
+{% load socialaccount %}
+{% include 'include/header.html' %} 
+
 
 <div class="hero user-hero">
 	<div class="container">
@@ -19,39 +21,42 @@
 	</div>
 </div>
 <main class="main__content_wrapper">
- 
 
-    <!-- Start login section  -->
-    <div class="login__section section--padding">
-        <div class="container">
-          
-                <div class="login__section--inner">
-                    <div class="row row-cols-md-2 row-cols-1"> 
-                        <div class="col">
-                            <div class="account__login register">
-                                <div class="account__login--header mb-25">
-                                    <h3 class="account__login--header__title mb-10">Create an Account</h3>
-                                    <p class="account__login--header__desc">Register here if you are a new customer</p>
-                                </div>
-                                <form action="." method="post">
-                                    {{ form.as_p }}
-                                    {% csrf_token %}
-                                    <p><input type="submit" value="Log-in"></p>
-                                </form>
-                                <h3 class="account__login--header__title mb-10">Войти через: </h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="login-wrapper"  id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>sign up</h3>
+        <form method="post" action="signup.php">
+            <div class="row">
+                 <label for="username-2">
+                    Username:
+                    <input type="text" name="username" id="username-2" placeholder="Hugh Jackman" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required" />
+                </label>
+            </div>
            
-        </div>     
+            <div class="row">
+                <label for="email-2">
+                    your email:
+                    <input type="password" name="email" id="email-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+             <div class="row">
+                <label for="password-2">
+                    Password:
+                    <input type="password" name="password" id="password-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+             <div class="row">
+                <label for="repassword-2">
+                     type Password:
+                    <input type="password" name="password" id="repassword-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+           <div class="row">
+             <button type="submit">sign up</button>
+           </div>
+        </form>
     </div>
-    <!-- End login section  -->
-
- 
-
-</main>
- 
+</div>
 
 {% endblock %}

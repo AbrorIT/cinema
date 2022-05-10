@@ -29,7 +29,8 @@ class Movie(models.Model):
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='movie_category')
     slug = models.SlugField()
-    movie_trailer = models.CharField(max_length=255)
+    movie_trailer = models.FileField(upload_to='movie',null=True,
+    validators=[FileExtensionValidator(allowed_extensions=['MOV','avi','mp4','webm','mkv'])])
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -41,8 +42,7 @@ class Movie(models.Model):
 
 class MovieImage(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie_image", null=True)
-    movie_image = models.FileField(upload_to='videos_trailers',null=True,
-    validators=[FileExtensionValidator(allowed_extensions=['MOV','avi','mp4','webm','mkv'])])
+    movie_image = models.FileField(upload_to='videos_trailers',null=True )
 
     class Meta:
         verbose_name = "Картинка фильма"
